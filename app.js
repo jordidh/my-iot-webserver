@@ -9,7 +9,20 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var keys = require('./routes/key');
 
+var auth = require('http-auth');
+
+/**
+ * Create the basic authentication with passwords file
+ */
+var basic = auth.basic({
+    realm: "iot-webserver",
+    file: __dirname + "/config/users.htpasswd"
+});
+
 var app = express();
+
+// Basic authentication => uncomment to enable basic authentication
+app.use(auth.connect(basic));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -9,6 +9,16 @@ const KEY_ID_NOT_EXISTS = '9999999d46ed2925ab0594f3';
 const VAL_ID_BAD_FORMAT = '12398ue1jdp299034iidjiasldvlkaw8q34';
 const VAL_ID_NOT_EXISTS = '9999999d46ed2925ab0594f3';
 
+// Do setup first
+frisby.globalSetup({
+    request: {
+        headers: {
+            'Authorization': 'Basic ' + Buffer.from("de1c59dc9a7a3b77856d1476938a8fd6:f9a0ffcb886a89e8526be704006bbd8e").toString('base64'),
+            'Content-Type': 'application/json'
+        }
+    }
+});
+
 // Include this line at the beginning of your firsby test. This will direct non-rejection of SSL cert
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -346,7 +356,7 @@ describe('Gets with keys that does not exist', function () {
             .expect('header', 'content-type', 'application/json; charset=utf-8')
             .done(done)
     });
-    it('should return 404 if key id does not exists', function (done) {
+    it('should return 404 if key id and the value do not exists', function (done) {
         frisby.get(URL_KEY + '/' + KEY_ID_NOT_EXISTS + '/value/' + VAL_ID_NOT_EXISTS)
         //.inspectJSON()
             .expect('status', 404)
@@ -359,8 +369,8 @@ describe('Posts that return error with keys that does not exist', function () {
     //TODO
 });
 
-describe('Puts that return error with keys that does not exist', function () {
-    it('should return 404 if key id does not exists', function (done) {
+describe('Puts that return error with keys and values that does not exist', function () {
+    it('should return 404 if key id and the value do not exists', function (done) {
         frisby.put(URL_KEY + '/' + KEY_ID_NOT_EXISTS + '/value/' + VAL_ID_NOT_EXISTS, {
             name: "testKeyName2",
             description: "testKeyDescription2",
